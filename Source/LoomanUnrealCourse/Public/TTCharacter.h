@@ -19,13 +19,18 @@ public:
 	ATTCharacter();
 
 	void MoveForward(float val);
+	void MoveRight(float val);
+	void PrimaryAttack();
 
 protected:
 	UPROPERTY(VisibleAnywhere)
 	USpringArmComponent* SpringArmComponent;
 	UPROPERTY(VisibleAnywhere)
 	UCameraComponent* CameraComp;
-	// Called when the game starts or when spawned
+
+	UPROPERTY(EditAnywhere)
+	TSubclassOf<AActor> ProjectileClass;
+ 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;	
 
 public:	
