@@ -13,9 +13,10 @@ ATTMagicProjectile::ATTMagicProjectile()
 	PrimaryActorTick.bCanEverTick = true;
 
 	SphereComp = CreateDefaultSubobject<USphereComponent>("UProjectileMovementComponent");
-	RootComponent = SphereComp;
+	RootComponent = SphereComp;	
 
-
+	SphereComp->SetCollisionProfileName("TTProjectile");
+		
 	EffectComp = CreateDefaultSubobject<UParticleSystemComponent>("EffectComp");
 	EffectComp->SetupAttachment(SphereComp);
 
