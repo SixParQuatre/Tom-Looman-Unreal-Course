@@ -23,6 +23,7 @@ public:
 	void PrimaryAttack();
 
 protected:
+
 	UPROPERTY(VisibleAnywhere)
 	USpringArmComponent* SpringArmComponent;
 	UPROPERTY(VisibleAnywhere)
@@ -30,6 +31,7 @@ protected:
 
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<AActor> ProjectileClass;
+
  	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;	
 
