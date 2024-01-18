@@ -32,11 +32,15 @@ void ATTExplosiveBarrel::OnComponentHit(UPrimitiveComponent* HitComp, AActor* Ot
 {
 	if (ATTMagicProjectile* HitActor = Cast<ATTMagicProjectile>(OtherActor))
 	{
-		RadialForceComp->FireImpulse();
 		OtherActor->Destroy();
-		this->Destroy();
+		Explode();
 	}
 
+}
+void ATTExplosiveBarrel::Explode()
+{
+	RadialForceComp->FireImpulse();
+	this->Destroy();
 }
 
 // Called every frame

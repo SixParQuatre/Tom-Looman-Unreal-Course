@@ -9,6 +9,7 @@
 
 #include "Kismet/KismetMathLibrary.h"
 #include "Camera/CameraComponent.h"
+#include "TTInteractionComponent.h"
 
 // Sets default values
 ATTCharacter::ATTCharacter()
@@ -21,6 +22,8 @@ ATTCharacter::ATTCharacter()
 	SpringArmComponent->bUsePawnControlRotation = true;
 	CameraComp = CreateDefaultSubobject<UCameraComponent>("Camera Component");
 	CameraComp->SetupAttachment(SpringArmComponent);
+
+	InteractionComp = CreateDefaultSubobject<UTTInteractionComponent>("InteractionComponent");
 
 	this->bUseControllerRotationYaw = false;	
 
@@ -61,14 +64,25 @@ void ATTCharacter::Tick(float DeltaTime)
 
 void ATTCharacter::PrimaryAttack()
 {
+	PlayAnimMontage(AttackAnim);
+	GetWorldTimerManager().SetTimer(PrimaryAttackTimer, this, &ATTCharacter::PrimaryAttack_Delayed, PrimaryProjectileDelay);
+	cachedPrimaryAttackDir = GetControlRotation();
+		}
+
+void ATTCharacter::PrimaryAttack_Delayed()
+{
 	FVector spawnPos = GetMesh()->GetSocketLocation("Muzzle_01");
-	FTransform SpawnTM = FTransform(GetControlRotation(), spawnPos);
+	FTransform SpawnTM = FTransform(cachedPrimaryAttackDir, spawnPos);
 	FActorSpawnParameters SpawnParams;
 	SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
 
 	GetWorld()->SpawnActor<AActor>(ProjectileClass, SpawnTM, SpawnParams);
 }
 
+void ATTCharacter::PrimaryInteract()
+{
+	this->InteractionComp->PrimaryInteract();
+}
 
 // Called to bind functionality to input
 void ATTCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
@@ -82,6 +96,7 @@ void ATTCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompone
 
 	PlayerInputComponent->BindAction("PrimaryAttack", EInputEvent::IE_Pressed, this, &ATTCharacter::PrimaryAttack);
 	PlayerInputComponent->BindAction("Jump", EInputEvent::IE_Pressed, this, &ACharacter::Jump);
+	PlayerInputComponent->BindAction("PrimaryInteract", EInputEvent::IE_Pressed, this, &ATTCharacter::PrimaryInteract);
 
 }
 

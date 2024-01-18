@@ -8,6 +8,8 @@
 
 class USpringArmComponent;
 class UCameraComponent;
+class UTTInteractionComponent;
+class UAnimMontage;
 
 UCLASS()
 class LOOMANUNREALCOURSE_API ATTCharacter : public ACharacter
@@ -26,14 +28,33 @@ protected:
 
 	UPROPERTY(VisibleAnywhere)
 	USpringArmComponent* SpringArmComponent;
+	
 	UPROPERTY(VisibleAnywhere)
 	UCameraComponent* CameraComp;
 
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(VisibleAnywhere)
+	UTTInteractionComponent* InteractionComp;
+
+	UPROPERTY(EditAnywhere, Category = "Primary Attack")
 	TSubclassOf<AActor> ProjectileClass;
+
+	UPROPERTY(EditAnywhere, Category = "Primary Attack")
+	UAnimMontage* AttackAnim;
 
  	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;	
+
+	void PrimaryInteract();
+
+
+	UPROPERTY(EditAnywhere, Category = "Primary Attack")
+	float PrimaryProjectileDelay = 0.5f;
+
+
+	FTimerHandle PrimaryAttackTimer;
+	FRotator cachedPrimaryAttackDir;
+
+	void PrimaryAttack_Delayed();
 
 public:	
 	// Called every frame
