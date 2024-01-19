@@ -20,7 +20,7 @@ public:
 	ATTMagicProjectile();
 
 protected:
-	UPROPERTY(VisibleAnywhere)
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	USphereComponent* SphereComp;
 
 	UPROPERTY(VisibleAnywhere)
@@ -28,7 +28,7 @@ protected:
 
 
 	UPROPERTY(VisibleAnywhere)
-	UParticleSystemComponent* EffectComp;
+	UParticleSystemComponent* EffectComp;	
 
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;

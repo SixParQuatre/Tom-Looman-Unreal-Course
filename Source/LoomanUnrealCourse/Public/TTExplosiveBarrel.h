@@ -25,6 +25,8 @@ public:
 	// Sets default values for this actor's properties
 	ATTExplosiveBarrel();
 
+	virtual void PostInitializeComponents();
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;

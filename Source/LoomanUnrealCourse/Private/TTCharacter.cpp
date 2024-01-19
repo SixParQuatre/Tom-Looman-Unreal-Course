@@ -67,7 +67,7 @@ void ATTCharacter::PrimaryAttack()
 	PlayAnimMontage(AttackAnim);
 	GetWorldTimerManager().SetTimer(PrimaryAttackTimer, this, &ATTCharacter::PrimaryAttack_Delayed, PrimaryProjectileDelay);
 	cachedPrimaryAttackDir = GetControlRotation();
-		}
+}
 
 void ATTCharacter::PrimaryAttack_Delayed()
 {
@@ -75,7 +75,7 @@ void ATTCharacter::PrimaryAttack_Delayed()
 	FTransform SpawnTM = FTransform(cachedPrimaryAttackDir, spawnPos);
 	FActorSpawnParameters SpawnParams;
 	SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
-
+	SpawnParams.Instigator = this;
 	GetWorld()->SpawnActor<AActor>(ProjectileClass, SpawnTM, SpawnParams);
 }
 

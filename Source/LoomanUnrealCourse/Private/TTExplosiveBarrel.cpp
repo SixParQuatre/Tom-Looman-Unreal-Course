@@ -19,13 +19,19 @@ ATTExplosiveBarrel::ATTExplosiveBarrel()
 	
 	RadialForceComp = CreateDefaultSubobject<URadialForceComponent>("Radial Force");
 	RadialForceComp->SetupAttachment(StaticMeshComp);
+	RadialForceComp->SetAutoActivate(false);
 }
 
+void ATTExplosiveBarrel::PostInitializeComponents()
+{
+
+	Super::PostInitializeComponents();
+	StaticMeshComp->OnComponentHit.AddDynamic(this, &ATTExplosiveBarrel::OnComponentHit);
+}
 // Called when the game starts or when spawned
 void ATTExplosiveBarrel::BeginPlay()
 {
 	Super::BeginPlay();
-	StaticMeshComp->OnComponentHit.AddDynamic(this, &ATTExplosiveBarrel::OnComponentHit);
 }
 
 void ATTExplosiveBarrel::OnComponentHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)

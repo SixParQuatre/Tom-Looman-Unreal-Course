@@ -34,7 +34,7 @@ protected:
 	UPROPERTY(VisibleAnywhere)
 	UStaticMeshComponent* Body;
 
-	UPROPERTY(VisibleAnywhere)
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	UStaticMeshComponent* Lid;
 
 public:	
