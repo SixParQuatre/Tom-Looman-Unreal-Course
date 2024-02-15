@@ -5,8 +5,10 @@
 
 #include "PhysicsEngine/RadialForceComponent.h"
 #include "Components/StaticMeshComponent.h"
+#include "Components/SphereComponent.h"
 
 #include "TTMagicProjectile.h"
+#include "TTAttributeComponent.h"
 
 // Sets default values
 ATTExplosiveBarrel::ATTExplosiveBarrel()
@@ -20,11 +22,13 @@ ATTExplosiveBarrel::ATTExplosiveBarrel()
 	RadialForceComp = CreateDefaultSubobject<URadialForceComponent>("Radial Force");
 	RadialForceComp->SetupAttachment(StaticMeshComp);
 	RadialForceComp->SetAutoActivate(false);
+
+	DamageSphere = CreateDefaultSubobject<USphereComponent>("Damage Sphere");
+	DamageSphere->SetupAttachment(RootComponent);
 }
 
 void ATTExplosiveBarrel::PostInitializeComponents()
 {
-
 	Super::PostInitializeComponents();
 	StaticMeshComp->OnComponentHit.AddDynamic(this, &ATTExplosiveBarrel::OnComponentHit);
 }
@@ -38,15 +42,37 @@ void ATTExplosiveBarrel::OnComponentHit(UPrimitiveComponent* HitComp, AActor* Ot
 {
 	if (ATTMagicProjectile* HitActor = Cast<ATTMagicProjectile>(OtherActor))
 	{
-		OtherActor->Destroy();
-		Explode();
+		if (HitActor->DoesDamageOnHit())
+		{
+			Explode();
+			UE_LOG(LogTemp, Log, TEXT("Explosive Barrel Explode"));
+			UE_LOG(LogTemp, Warning, TEXT("Actor %s at gametime %f"), *GetNameSafe(OtherActor), GetWorld()->GetTimeSeconds());
+			FString msg = FString::Printf(TEXT("Hit at location %s"), *Hit.ImpactPoint.ToString());
+			DrawDebugString(GetWorld(), Hit.ImpactPoint, msg, nullptr, FColor::Green, 2.f, true);
+
+			TArray<AActor*> outOverlappingActors;
+			DamageSphere->GetOverlappingActors(outOverlappingActors);
+			for (AActor* overlapingActor : outOverlappingActors)
+			{
+				
+				UTTAttributeComponent* cpt = overlapingActor->GetComponentByClass<UTTAttributeComponent>();
+				if (cpt == nullptr)
+					continue;
+
+				cpt->ApplyHealthChange(DamageOnExplode);
+			}
+
+		}
 	}
 
 }
 void ATTExplosiveBarrel::Explode()
 {
 	RadialForceComp->FireImpulse();
+
 	this->Destroy();
+
+
 }
 
 // Called every frame

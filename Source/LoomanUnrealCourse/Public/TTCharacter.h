@@ -10,6 +10,7 @@ class USpringArmComponent;
 class UCameraComponent;
 class UTTInteractionComponent;
 class UAnimMontage;
+class UTTAttributeComponent;
 
 UCLASS()
 class LOOMANUNREALCOURSE_API ATTCharacter : public ACharacter
@@ -19,10 +20,6 @@ class LOOMANUNREALCOURSE_API ATTCharacter : public ACharacter
 public:
 	// Sets default values for this character's properties
 	ATTCharacter();
-
-	void MoveForward(float val);
-	void MoveRight(float val);
-	void PrimaryAttack();
 
 protected:
 
@@ -35,26 +32,50 @@ protected:
 	UPROPERTY(VisibleAnywhere)
 	UTTInteractionComponent* InteractionComp;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	UTTAttributeComponent* AttributeComponent;
+
+	
+	UPROPERTY(EditAnywhere, Category = "Attack")
+	UAnimMontage* AttackAnim;
+
+
+	UPROPERTY(EditAnywhere, Category = "Attack")
+	float TargetDistance = 10000.0f;
+	FVector currentTargettingPoint;
+
+	UPROPERTY(EditAnywhere, Category = "Attack")
+	float AttackDelay = 0.2f;
+	
 	UPROPERTY(EditAnywhere, Category = "Primary Attack")
 	TSubclassOf<AActor> ProjectileClass;
 
-	UPROPERTY(EditAnywhere, Category = "Primary Attack")
-	UAnimMontage* AttackAnim;
-
- 	// Called when the game starts or when spawned
-	virtual void BeginPlay() override;	
-
-	void PrimaryInteract();
-
-
-	UPROPERTY(EditAnywhere, Category = "Primary Attack")
-	float PrimaryProjectileDelay = 0.5f;
-
 
 	FTimerHandle PrimaryAttackTimer;
-	FRotator cachedPrimaryAttackDir;
 
-	void PrimaryAttack_Delayed();
+	UPROPERTY(EditAnywhere, Category = "Secondary Attack")
+	TSubclassOf<AActor> Blackhole;
+
+	UPROPERTY(EditAnywhere, Category = "Special Ability")
+	TSubclassOf<AActor> SpecialAbilityProjectile;
+
+
+	FTimerHandle SecondaryAttackTimer;
+
+
+	void MoveForward(float val);
+	void MoveRight(float val);
+	void PrimaryAttack();
+	void PrimaryInteract();
+	void SecondaryAttack();
+	
+	// Called when the game starts or when spawned
+	virtual void BeginPlay() override;
+
+	
+	void SpecialAbility();
+
+	FTimerHandle SpecialAbilityTimer;
 
 public:	
 	// Called every frame
@@ -62,5 +83,16 @@ public:
 
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+
+private: 
+	void UpdateTargettingPoint();
+	void SpawnFromEndToCrosshair(UClass* toSpawn);
+
+	void ProjectileActionDelayed(UAnimMontage* actionAnim, FTimerHandle& actionTimer, float actionDelay, UClass* projectileToSpawn);
+
+	UFUNCTION()
+	void OnHealthChanged(AActor* _instigator, UTTAttributeComponent* source, float oldHealth, float newHealth);
+
+	virtual void  PostInitializeComponents();
 
 };

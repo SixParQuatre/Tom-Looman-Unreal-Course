@@ -9,6 +9,9 @@
 class USphereComponent;
 class UProjectileMovementComponent;
 class UParticleSystemComponent;
+class UAudioComponent;
+class USoundBase;
+class UParticleSystem;
 
 UCLASS()
 class LOOMANUNREALCOURSE_API ATTMagicProjectile : public AActor
@@ -30,11 +33,41 @@ protected:
 	UPROPERTY(VisibleAnywhere)
 	UParticleSystemComponent* EffectComp;	
 
+	UPROPERTY(VisibleAnywhere)
+	UAudioComponent* AudioComp;
+	
+
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
+	bool DamagesOnImpact = true;
+
+	UPROPERTY(EditAnywhere)
+	float Damage = 10.f;
+
+	UPROPERTY(EditAnywhere)
+	UParticleSystem* ImpactFX;
+
+	UPROPERTY(EditAnywhere)
+	USoundBase* ImpactSound;
+
+	UFUNCTION()
+	void OnActorOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
+
+	UFUNCTION()
+	void OnComponentHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);
+
+	virtual void OnComponentHitOvr(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);
 public:	
 	// Called every frame
-	virtual void Tick(float DeltaTime) override;
+	//virtual void Tick(float DeltaTime) override;
+
+	bool DoesDamageOnHit() { return DamagesOnImpact; }
+
+	virtual void PostInitializeComponents() override;
+
+private:
+	void OnFinalHit(UWorld* world, FVector location, FRotator orientation);
+
 
 };

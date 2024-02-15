@@ -8,6 +8,7 @@
 
 class URadialForceComponent;
 class UStaticMeshComponent;
+class USphereComponent;
 
 
 UCLASS()
@@ -20,6 +21,12 @@ class LOOMANUNREALCOURSE_API ATTExplosiveBarrel : public AActor
 
 	UPROPERTY(VisibleAnywhere)
 	UStaticMeshComponent* StaticMeshComp;
+
+	UPROPERTY(VisibleAnywhere)
+	USphereComponent* DamageSphere;
+
+	UPROPERTY(EditAnywhere)
+	float DamageOnExplode = 30.0f;
 
 public:	
 	// Sets default values for this actor's properties

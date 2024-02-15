@@ -37,7 +37,7 @@ void UTTInteractionComponent::PrimaryInteract()
 {
 	AActor* actorOwner = GetOwner(); 
 	APawn* ownerPawn = Cast<APawn>(actorOwner);
-	if (ownerPawn == NULL)
+	if (ownerPawn == nullptr)
 		return;
 	
 	FCollisionObjectQueryParams ObjectQueryParams;
@@ -64,7 +64,7 @@ void UTTInteractionComponent::PrimaryInteract()
 		{
 
 			AActor* hitActor = result.GetActor();
-			if (hitActor != NULL && hitActor->Implements<UTTGameplayInterface>())
+			if (hitActor != nullptr && hitActor->Implements<UTTGameplayInterface>())
 			{
 				ITTGameplayInterface::Execute_Interact(hitActor, ownerPawn);
 				debugColor = FColor::Green; 
