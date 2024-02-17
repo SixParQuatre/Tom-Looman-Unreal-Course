@@ -136,8 +136,15 @@ void ATTCharacter::ProjectileActionDelayed(UAnimMontage* actionAnim, FTimerHandl
 
 void ATTCharacter::OnHealthChanged(AActor* _instigator, UTTAttributeComponent* source, float oldHealth, float newHealth)
 {
-	if (oldHealth > 0  && newHealth <= 0)
-		DisableInput(Cast<APlayerController>(GetController()));
+	if (oldHealth > newHealth)
+	{
+		if (oldHealth > 0 && newHealth <= 0)
+			DisableInput(Cast<APlayerController>(GetController()));
+
+		GetMesh()->SetScalarParameterValueOnMaterials("TimeToHit", GetWorld()->TimeSeconds);
+		GetMesh()->SetVectorParameterValueOnMaterials("DamageFlashColor", UKismetMathLibrary::Conv_LinearColorToVector(DamageFlashColor));
+		GetMesh()->SetScalarParameterValueOnMaterials("DamageFlashDuration",DamageflashDuration);
+	}
 }
 
 void ATTCharacter::SpawnFromEndToCrosshair(UClass* toSpawn)

@@ -50,7 +50,6 @@ protected:
 	UPROPERTY(EditAnywhere, Category = "Primary Attack")
 	TSubclassOf<AActor> ProjectileClass;
 
-
 	FTimerHandle PrimaryAttackTimer;
 
 	UPROPERTY(EditAnywhere, Category = "Secondary Attack")
@@ -59,6 +58,12 @@ protected:
 	UPROPERTY(EditAnywhere, Category = "Special Ability")
 	TSubclassOf<AActor> SpecialAbilityProjectile;
 
+
+	UPROPERTY(EditAnywhere, Category = "Damage Received")
+	float DamageflashDuration = 1.f;
+
+	UPROPERTY(EditAnywhere, Category = "Damage Received")
+	FColor DamageFlashColor = FColor::Red;
 
 	FTimerHandle SecondaryAttackTimer;
 
