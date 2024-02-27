@@ -60,19 +60,23 @@ void UTTInteractionComponent::PrimaryInteract()
 	if (foundHit)
 	{ 
 		debugColor = FColor::Orange;
+		bool canInteract = false;
 		for (FHitResult result : results)
 		{
-
 			AActor* hitActor = result.GetActor();
 			if (hitActor != nullptr && hitActor->Implements<UTTGameplayInterface>())
 			{
-				ITTGameplayInterface::Execute_Interact(hitActor, ownerPawn);
-				debugColor = FColor::Green; 
-				DrawDebugSphere(GetWorld(), result.ImpactPoint, sweepShape.GetSphereRadius(), debugSphereSegment, debugColor, false, debugDuration);
-				break;
+				
+				ITTGameplayInterface::Execute_CanInteract(hitActor, ownerPawn, canInteract);
+				if (canInteract)
+				{
+					ITTGameplayInterface::Execute_Interact(hitActor, ownerPawn);
+					debugColor = FColor::Green;
+					DrawDebugSphere(GetWorld(), result.ImpactPoint, sweepShape.GetSphereRadius(), debugSphereSegment, debugColor, false, debugDuration);
+					break;
+				}
 			}
-			else
-				DrawDebugSphere(GetWorld(), result.ImpactPoint, sweepShape.GetSphereRadius(), debugSphereSegment, debugColor, false, debugDuration);
+			DrawDebugSphere(GetWorld(), result.ImpactPoint, sweepShape.GetSphereRadius(), debugSphereSegment, debugColor, false, debugDuration);
 		}
 	}
 	else

@@ -12,6 +12,7 @@ class UParticleSystemComponent;
 class UAudioComponent;
 class USoundBase;
 class UParticleSystem;
+//class UWidget;
 
 UCLASS()
 class LOOMANUNREALCOURSE_API ATTMagicProjectile : public AActor
@@ -50,6 +51,9 @@ protected:
 
 	UPROPERTY(EditAnywhere)
 	USoundBase* ImpactSound;
+
+	//UPROPERTY(EditAnywhere)
+	//UWidget* DamageWidget;
 
 	UFUNCTION()
 	void OnActorOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);

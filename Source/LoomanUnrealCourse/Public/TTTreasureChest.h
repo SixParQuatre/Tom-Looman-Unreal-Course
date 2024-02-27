@@ -26,7 +26,10 @@ public:
 	UPROPERTY(EditAnywhere)
 	double fOpenPitch = 110;
 
-	void Interact_Implementation(APawn* instigator);
+	bool Interact_Implementation(APawn* instigator);
+	bool CanInteract_Implementation(APawn* instigator) { return isOpen; }
+private:
+	bool isOpen;
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;

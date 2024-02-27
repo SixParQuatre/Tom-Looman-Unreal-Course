@@ -23,5 +23,9 @@ class LOOMANUNREALCOURSE_API ITTGameplayInterface
 	// Add interface functions to this class. This is the class that will be inherited to implement this interface.
 public:
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
-	void Interact(APawn* instigator);
+	void CanInteract(APawn* instigator, bool& result);
+
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	bool Interact(APawn* instigator);
+
 };

@@ -9,8 +9,11 @@
 #include "Particles/ParticleSystemComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "Sound/SoundBase.h"
+//#include "Components/Widget.h"
+
 
 #include "TTAttributeComponent.h"
+#include "Blueprint/UserWidget.h"
 
 // Sets default values
 ATTMagicProjectile::ATTMagicProjectile()
@@ -64,8 +67,14 @@ void ATTMagicProjectile::OnActorOverlap(UPrimitiveComponent* OverlappedComponent
 	UTTAttributeComponent* attComp = Cast<UTTAttributeComponent>(OtherActor->GetComponentByClass<UTTAttributeComponent>());
 	if (attComp == nullptr)
 		return;
+	if (attComp->ApplyHealthChange(-Damage))// && DamageWidget != nullptr)
+	{
+		if (APawn* instigator = GetInstigator())
+		{
+			//CreateWidget(instigator->GetController(), DamageWidget);
 
-	attComp->ApplyHealthChange(-Damage);
+		}
+	}
 	OnFinalHit(GetWorld(), SweepResult.Location, GetActorRotation());
 }
 

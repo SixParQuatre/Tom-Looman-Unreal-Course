@@ -10,6 +10,7 @@ ATTTreasureChest::ATTTreasureChest()
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
+	isOpen = false;
 
 	Body = CreateDefaultSubobject<UStaticMeshComponent>("Body");
 	RootComponent = Body;
@@ -26,9 +27,11 @@ void ATTTreasureChest::BeginPlay()
 	
 }
 
-void ATTTreasureChest::Interact_Implementation(APawn* instigator)
+ bool ATTTreasureChest::Interact_Implementation(APawn* instigator)
 {
 	Lid->SetRelativeRotation(FRotator(fOpenPitch, 0, 0));
+	isOpen = true;
+	return true;
 }
 
 // Called every frame
