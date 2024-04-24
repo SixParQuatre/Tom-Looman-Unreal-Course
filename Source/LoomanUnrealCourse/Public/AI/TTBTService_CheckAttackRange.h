@@ -21,6 +21,7 @@ class LOOMANUNREALCOURSE_API UTTBTService_CheckAttackRange : public UBTService
 	UPROPERTY(EditAnywhere)
 	float Range = 2000.f;
 
+	UPROPERTY(EditAnywhere)
 	FBlackboardKeySelector InRangeVar;
 	
 };

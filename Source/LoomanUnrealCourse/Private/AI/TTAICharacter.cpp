@@ -1,7 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "TTAICharacter.h"
+#include "AI/TTAICharacter.h"
 
 // Sets default values
 ATTAICharacter::ATTAICharacter()

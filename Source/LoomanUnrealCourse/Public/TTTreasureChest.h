@@ -27,7 +27,7 @@ public:
 	double fOpenPitch = 110;
 
 	bool Interact_Implementation(APawn* instigator);
-	bool CanInteract_Implementation(APawn* instigator) { return isOpen; }
+	void CanInteract_Implementation(APawn* instigator, bool& result) { result = isOpen; }
 private:
 	bool isOpen;
 protected:
